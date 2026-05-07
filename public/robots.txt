@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://joydipbag.dev/sitemap.xml
+Sitemap: https://joydip.in/sitemap.xml

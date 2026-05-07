@@ -2,7 +2,7 @@ export const siteConfig = {
   name: "Joydip Bag",
   legalName: "Joydip Bag",
   role: "Backend-focused Full Stack Engineer",
-  siteUrl: import.meta.env.SITE_URL || "https://joydip.in",
+  siteUrl: import.meta.env.VITE_SITE_URL || "https://joydip.in",
   locale: "en_US",
   themeColor: "#D4FF00",
   defaultImage: "/portfolio_og.png",

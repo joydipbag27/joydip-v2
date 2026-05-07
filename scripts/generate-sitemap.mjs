@@ -1,7 +1,9 @@
 import { writeFile } from "node:fs/promises";
 
 const siteUrl = (
-  process.env.SITE_URL 
+  process.env.SITE_URL ||
+  process.env.VITE_SITE_URL ||
+  "https://joydip.in"
 ).replace(/\/$/, "");
 
 const routes = [

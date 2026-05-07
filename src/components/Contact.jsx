@@ -2,6 +2,19 @@ import { useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { HanddrawnSparkle } from "./Hero";
 
+const CONTACT_EMAIL = "joydipbag27@gmail.com";
+const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
+  CONTACT_EMAIL,
+)}&su=${encodeURIComponent("Portfolio inquiry")}&body=${encodeURIComponent(
+  "Hi Joydip,\n\nI came across your portfolio and wanted to connect about ",
+)}`;
+
+const emailJsConfig = {
+  serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID,
+  templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+  publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+};
+
 const CatSVG = ({ mouseX, mouseY }) => {
   const eyeTransformX = useTransform(mouseX, [0, window.innerWidth], [-5, 5]);
   const eyeTransformY = useTransform(mouseY, [0, window.innerHeight], [-3, 3]);
@@ -82,12 +95,78 @@ const Contact = () => {
   }, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [quickMessage, setQuickMessage] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [sendState, setSendState] = useState("idle");
+  const [sendError, setSendError] = useState("");
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
   const handleMouseMove = (e) => {
     mouseX.set(e.clientX);
     mouseY.set(e.clientY);
+  };
+
+  const handleQuickMessageChange = (field) => (event) => {
+    setQuickMessage((current) => ({
+      ...current,
+      [field]: event.target.value,
+    }));
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSendError("");
+    setSendState("idle");
+  };
+
+  const sendQuickMessage = async (event) => {
+    event.preventDefault();
+    setSendError("");
+
+    if (!emailJsConfig.serviceId || !emailJsConfig.templateId || !emailJsConfig.publicKey) {
+      setSendError("Email service is not configured yet.");
+      return;
+    }
+
+    setSendState("sending");
+
+    try {
+      const response = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          service_id: emailJsConfig.serviceId,
+          template_id: emailJsConfig.templateId,
+          user_id: emailJsConfig.publicKey,
+          template_params: {
+            to_email: CONTACT_EMAIL,
+            to_name: "Joydip",
+            from_name: quickMessage.name,
+            email: quickMessage.email,
+            from_email: quickMessage.email,
+            reply_to: quickMessage.email,
+            message: quickMessage.message,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("EmailJS request failed");
+      }
+
+      setSendState("sent");
+      setQuickMessage({ name: "", email: "", message: "" });
+      window.setTimeout(closeModal, 900);
+    } catch {
+      setSendState("idle");
+      setSendError("Message could not be sent. Please try the email button.");
+    }
   };
 
   return (
@@ -107,8 +186,10 @@ const Contact = () => {
         {/* Primary CTA */}
         <div className="pt-4 md:pt-8">
           <a
-            href="mailto:joydip@example.com"
-            aria-label="Email Joydip Bag"
+            href={gmailComposeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open Gmail compose addressed to Joydip Bag"
             className="inline-block px-6 py-3 md:px-10 md:py-5 bg-black text-white text-sm md:text-lg lg:text-xl font-bold rounded-full hover:bg-gray-900 transition-all duration-300 shadow-xl hover:shadow-2xl active:scale-95"
           >
             [ Email Me ]
@@ -118,7 +199,11 @@ const Contact = () => {
         {/* Secondary Action */}
         <div className="pt-4">
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              setIsModalOpen(true);
+              setSendState("idle");
+              setSendError("");
+            }}
             aria-haspopup="dialog"
             className="text-gray-400 hover:text-black text-sm md:text-base font-medium transition-colors flex items-center justify-center gap-2 mx-auto group"
           >
@@ -135,9 +220,10 @@ const Contact = () => {
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-            onClick={() => setIsModalOpen(false)}
+            onClick={closeModal}
           ></div>
-          <div
+          <form
+            onSubmit={sendQuickMessage}
             className="relative bg-white w-full max-w-lg p-8 rounded-2xl shadow-2xl space-y-6"
             role="dialog"
             aria-modal="true"
@@ -146,29 +232,60 @@ const Contact = () => {
             <div className="flex justify-between items-center">
               <h3 id="quick-message-title" className="text-xl font-bold text-black">Quick Message</h3>
               <button
-                onClick={() => setIsModalOpen(false)}
+                type="button"
+                onClick={closeModal}
                 aria-label="Close quick message"
                 className="text-gray-400 hover:text-black text-2xl"
               >
                 &times;
               </button>
             </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <input
+                type="text"
+                value={quickMessage.name}
+                onChange={handleQuickMessageChange("name")}
+                required
+                className="w-full p-3 border border-gray-100 bg-gray-50 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition-all"
+                placeholder="Your name"
+                aria-label="Your name"
+              />
+              <input
+                type="email"
+                value={quickMessage.email}
+                onChange={handleQuickMessageChange("email")}
+                required
+                className="w-full p-3 border border-gray-100 bg-gray-50 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition-all"
+                placeholder="Your email"
+                aria-label="Your email"
+              />
+            </div>
             <textarea
               autoFocus
+              value={quickMessage.message}
+              onChange={handleQuickMessageChange("message")}
+              required
               aria-label="Quick message"
               className="w-full h-40 p-4 border border-gray-100 bg-gray-50 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition-all resize-none"
               placeholder="What's on your mind?"
             ></textarea>
+            {sendError && (
+              <p className="text-sm font-bold text-red-500" role="alert">
+                {sendError}
+              </p>
+            )}
             <button
+              type="submit"
+              disabled={sendState === "sending" || sendState === "sent"}
               className="w-full py-4 bg-black text-white font-bold rounded-xl hover:bg-gray-900 transition-colors"
-              onClick={() => {
-                alert("Message sent (simulation)");
-                setIsModalOpen(false);
-              }}
             >
-              Send Message
+              {sendState === "sending"
+                ? "Sending..."
+                : sendState === "sent"
+                  ? "Message Sent"
+                  : "Send Message"}
             </button>
-          </div>
+          </form>
         </div>
       )}
 

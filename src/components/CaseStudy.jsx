@@ -1,12 +1,11 @@
 import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   ChevronDown,
   TrendingUp,
   Zap,
-  Infinity,
+  Infinity as InfinityIcon,
   ArrowRight,
-  Layers,
   Database,
   User,
   Code,
@@ -14,7 +13,7 @@ import {
   Activity,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { HanddrawnSparkle, MarkerSweep, ScribbleUnderline } from "./Hero";
+import { HanddrawnSparkle, ScribbleUnderline } from "./Hero";
 
 const WavyDivider = () => (
   <div className="relative w-full py-24 flex justify-center overflow-visible">
@@ -91,66 +90,40 @@ const MetricCard = ({ icon: Icon, value, label, sublabel, delay }) => (
   </motion.div>
 );
 
-const FeaturePoint = ({ icon: Icon, title, desc, delay }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ delay, duration: 0.6, ease: "easeOut" }}
-    whileTap={{ scale: 0.98 }}
-    className="flex items-center gap-8 group cursor-default p-8 rounded-[32px] transition-all border border-transparent hover:border-black/5"
+const SystemDiagramNode = ({
+  icon: Icon,
+  label,
+  size = "w-12 h-12 md:w-16 md:h-16",
+  labelPos = "bottom",
+}) => (
+  <div
+    className={`flex ${labelPos === "right" ? "flex-row items-center gap-3" : "flex-col items-center gap-2"}`}
   >
-    <motion.div
-      whileHover={{ scale: 1.1, rotate: 5 }}
-      className="p-6 border-[3px] border-black rounded-2xl bg-white group-hover:bg-[#D4FF00] transition-all duration-300 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] group-hover:shadow-none group-hover:translate-x-[3px] group-hover:translate-y-[3px] shrink-0"
+    <div
+      className={`${size} rounded-xl border-2 border-black bg-white flex items-center justify-center transition-transform hover:scale-105`}
     >
-      <Icon className="w-10 h-10 text-black" strokeWidth={2.5} />
-    </motion.div>
-    <div className="flex flex-col gap-1.5">
-      <h3 className="font-black text-2xl tracking-tighter text-black leading-none">
-        {title}
-      </h3>
-      <p className="text-gray-500 text-sm font-bold leading-tight max-w-[220px]">
-        {desc}
-      </p>
+      <Icon className="w-6 h-6 md:w-8 md:h-8 text-black" strokeWidth={1.2} />
     </div>
-  </motion.div>
+    <span
+      className={`text-[9px] font-black uppercase tracking-widest text-black ${labelPos === "bottom" ? "text-center" : ""} px-1`}
+    >
+      {label}
+    </span>
+  </div>
 );
 
 const SystemDiagram = () => {
-  const Node = ({
-    icon: Icon,
-    label,
-    size = "w-12 h-12 md:w-16 md:h-16",
-    labelPos = "bottom",
-  }) => (
-    <div
-      className={`flex ${labelPos === "right" ? "flex-row items-center gap-3" : "flex-col items-center gap-2"}`}
-    >
-      <div
-        className={`${size} rounded-xl border-2 border-black bg-white flex items-center justify-center transition-transform hover:scale-105`}
-      >
-        <Icon className="w-6 h-6 md:w-8 md:h-8 text-black" strokeWidth={1.2} />
-      </div>
-      <span
-        className={`text-[9px] font-black uppercase tracking-widest text-black ${labelPos === "bottom" ? "text-center" : ""} px-1`}
-      >
-        {label}
-      </span>
-    </div>
-  );
-
   return (
     <div className="relative w-full max-w-3xl p-4 md:p-8">
       {/* Main Horizontal Flow */}
       <div className="flex items-start justify-between w-full relative z-10">
-        <Node icon={User} label="Client" />
+        <SystemDiagramNode icon={User} label="Client" />
 
         <div className="mt-[14px] md:mt-[22px]">
           <ArrowRight className="w-5 h-5 text-zinc-300" strokeWidth={2} />
         </div>
 
-        <Node icon={Code} label="API Gateway" />
+        <SystemDiagramNode icon={Code} label="API Gateway" />
 
         <div className="mt-[14px] md:mt-[22px]">
           <ArrowRight className="w-5 h-5 text-zinc-300" strokeWidth={2} />
@@ -163,7 +136,7 @@ const SystemDiagram = () => {
 
           {/* Auth Node - Positioned Above */}
           <div className="absolute bottom-[calc(100%+24px)] left-1/2 -translate-x-[20px] md:-translate-x-[24px] whitespace-nowrap">
-            <Node
+            <SystemDiagramNode
               icon={ShieldCheck}
               label="Auth"
               size="w-10 h-10 md:w-12 md:h-12"
@@ -171,11 +144,11 @@ const SystemDiagram = () => {
             />
           </div>
 
-          <Node icon={Zap} label="Function" size="w-12 h-12 md:w-16 md:h-16" />
+          <SystemDiagramNode icon={Zap} label="Function" size="w-12 h-12 md:w-16 md:h-16" />
 
           {/* Monitoring Node - Positioned Below */}
           <div className="absolute top-[calc(100%+24px)] left-1/2 -translate-x-[20px] md:-translate-x-[24px] whitespace-nowrap">
-            <Node
+            <SystemDiagramNode
               icon={Activity}
               label="Monitoring"
               size="w-10 h-10 md:w-12 md:h-12"
@@ -188,7 +161,7 @@ const SystemDiagram = () => {
           <ArrowRight className="w-5 h-5 text-zinc-300" strokeWidth={2} />
         </div>
 
-        <Node icon={Database} label="Storage" />
+        <SystemDiagramNode icon={Database} label="Storage" />
       </div>
     </div>
   );
@@ -342,7 +315,7 @@ const CaseStudy = () => {
                   delay={0.3}
                 />
                 <MetricCard
-                  icon={Infinity}
+                  icon={InfinityIcon}
                   value="Auto"
                   label="scaling"
                   sublabel="on demand"

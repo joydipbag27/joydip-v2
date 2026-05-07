@@ -15,7 +15,7 @@ import {
   Rocket,
   Quote,
 } from "lucide-react";
-import { HanddrawnSparkle, ScribbleUnderline } from "../components/Hero";
+import { HanddrawnSparkle } from "../components/Hero";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -51,6 +51,7 @@ const About = () => {
 
   return (
     <motion.main
+      id="main-content"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -73,7 +74,10 @@ const About = () => {
               </span>
               <img
                 src="/aboutMe-arrow-1.svg"
-                alt="Handdrawn Arrow"
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                decoding="async"
                 className="w-12 h-8 rotate-[70deg] mt-1"
               />
             </div>
@@ -84,7 +88,12 @@ const About = () => {
             <div className="absolute rotate-[-1deg] inset-0 bg-white border-2 border-black/10 rounded-[2rem] p-3 shadow-md flex flex-col items-center justify-center overflow-hidden z-10">
               <img
                 src="/pf-profile.png"
-                alt="Joydip Bag"
+                alt="Portrait of Joydip Bag"
+                width="512"
+                height="512"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
                 className="w-full h-full object-cover rounded-[1.5rem] select-none pointer-events-none filter saturate-[1.05]"
               />
             </div>
@@ -210,7 +219,10 @@ const About = () => {
             <div className="absolute rotate-[90deg] right-[-3.8rem] sm:-right-[4rem] bottom-[18%] scale-[0.85] sm:scale-100 origin-left select-none pointer-events-none z-1">
               <img
                 src="/aboutMe-arrow-2.svg"
-                alt="Curved Arrow"
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                decoding="async"
                 className="w-12 h-12"
               />
             </div>

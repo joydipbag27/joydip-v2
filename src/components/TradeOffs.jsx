@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Wallet, Zap, Shield, Sparkles } from "lucide-react";
-import { ScribbleUnderline, MarkerSweep, HanddrawnSparkle } from "./Hero";
+import { MarkerSweep, HanddrawnSparkle } from "./Hero";
 
 const TradeOffs = ({ bgColor = "#fcfcfc" }) => {
   const [values, setValues] = useState({
@@ -117,7 +117,7 @@ const TradeOffs = ({ bgColor = "#fcfcfc" }) => {
             </div>
 
             <div className="relative">
-              <h1 className="text-4xl md:text-5xl font-black tracking-tight text-black leading-[0.95] select-none uppercase relative z-10">
+              <h2 className="text-4xl md:text-5xl font-black tracking-tight text-black leading-[0.95] select-none uppercase relative z-10">
                 System <br />
                 <span className="relative inline-block z-10 px-1">
                   Trade-offs
@@ -127,7 +127,7 @@ const TradeOffs = ({ bgColor = "#fcfcfc" }) => {
                     </AnimatePresence>
                   </span>
                 </span>
-              </h1>
+              </h2>
             </div>
 
             <p className="text-[15px] text-gray-700 font-bold max-w-sm leading-tight italic">
@@ -270,8 +270,6 @@ const Slider = ({
   value,
   icon,
   onChange,
-  isActive,
-  isAnyActive,
 }) => {
   const positions = [0, 50, 100];
 

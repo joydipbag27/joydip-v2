@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   TrendingDown,
@@ -10,9 +10,7 @@ import {
   Globe,
   Users,
   Lock,
-  DollarSign,
   ShieldCheck,
-  Activity,
   AlertTriangle,
   CheckCircle2,
   XCircle,
@@ -30,11 +28,15 @@ const SastaDriveCaseStudy = () => {
   }, []);
 
   return (
-    <div className="w-full min-h-screen bg-[#fafafa] text-gray-900 pb-32 font-sans selection:bg-[#d4ff00] selection:text-black">
+    <main
+      id="main-content"
+      className="w-full min-h-screen bg-[#fafafa] text-gray-900 pb-32 font-sans selection:bg-[#d4ff00] selection:text-black"
+    >
       {/* Top Navigation */}
       <div className="max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-4 flex justify-between items-center">
         <Link
           to="/"
+          aria-label="Back to home"
           className="flex items-center justify-center w-10 h-10 rounded-full border-2 border-black/10 hover:border-black transition-colors bg-white group"
         >
           <ChevronLeft
@@ -243,7 +245,12 @@ const SastaDriveCaseStudy = () => {
                 <div className="w-full flex-1 relative bg-[#131415]">
                   <img
                     src="/sastadriveSS.png"
-                    alt="SastaDrive Dashboard Screenshot"
+                    alt="SastaDrive dashboard showing the serverless file storage interface"
+                    width="1200"
+                    height="675"
+                    loading="eager"
+                    fetchPriority="high"
+                    decoding="async"
                     className="w-full h-full object-cover object-top"
                   />
                 </div>
@@ -605,7 +612,7 @@ const SastaDriveCaseStudy = () => {
           </div>
         </section>
       </article>
-    </div>
+    </main>
   );
 };
 

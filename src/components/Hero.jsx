@@ -1,8 +1,7 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import handArrow from "../assets/hand-arrow.png";
-import { ArrowRight, Zap, Database, Layers, TrendingUp } from "lucide-react";
+import { ArrowRight, TrendingUp } from "lucide-react";
 
 export const HanddrawnSparkle = ({
   className = "",
@@ -66,7 +65,7 @@ export const HanddrawnSparkle = ({
   </motion.div>
 );
 
-export const MarkerSweep = ({ delay = 0.5, onHover = false }) => {
+export const MarkerSweep = ({ delay = 0.5 }) => {
   return (
     <motion.svg
       viewBox="0 0 500 100"
@@ -143,7 +142,10 @@ const ArrowIcon = ({ direction = "down", className = "" }) => {
   return (
     <img
       src={handArrow}
-      alt="arrow"
+      alt=""
+      aria-hidden="true"
+      loading="lazy"
+      decoding="async"
       className={`${className} ${rotation} object-contain`}
     />
   );
@@ -333,7 +335,7 @@ const Hero = () => {
 
           {/* CTAs */}
           <div className="flex flex-wrap items-center justify-center lg:justify-start gap-8 mb-4 lg:mb-16">
-            <Link to="/work/sastadrive">
+            <Link to="/work/sastadrive" aria-label="View the SastaDrive engineering case study">
               <motion.button
                 whileHover={{
                   backgroundColor: "#e0ff33",
@@ -350,7 +352,7 @@ const Hero = () => {
               </motion.button>
             </Link>
 
-            <Link to="/lab">
+            <Link to="/lab" aria-label="Explore engineering experiments">
               <motion.button
                 whileHover={{ opacity: 0.8 }}
                 whileTap={{ scale: 0.98 }}

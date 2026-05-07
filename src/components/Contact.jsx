@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { HanddrawnSparkle } from "./Hero";
 
@@ -108,6 +108,7 @@ const Contact = () => {
         <div className="pt-4 md:pt-8">
           <a
             href="mailto:joydip@example.com"
+            aria-label="Email Joydip Bag"
             className="inline-block px-6 py-3 md:px-10 md:py-5 bg-black text-white text-sm md:text-lg lg:text-xl font-bold rounded-full hover:bg-gray-900 transition-all duration-300 shadow-xl hover:shadow-2xl active:scale-95"
           >
             [ Email Me ]
@@ -118,6 +119,7 @@ const Contact = () => {
         <div className="pt-4">
           <button
             onClick={() => setIsModalOpen(true)}
+            aria-haspopup="dialog"
             className="text-gray-400 hover:text-black text-sm md:text-base font-medium transition-colors flex items-center justify-center gap-2 mx-auto group"
           >
             or send a quick message{" "}
@@ -135,11 +137,17 @@ const Contact = () => {
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={() => setIsModalOpen(false)}
           ></div>
-          <div className="relative bg-white w-full max-w-lg p-8 rounded-2xl shadow-2xl space-y-6">
+          <div
+            className="relative bg-white w-full max-w-lg p-8 rounded-2xl shadow-2xl space-y-6"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="quick-message-title"
+          >
             <div className="flex justify-between items-center">
-              <h3 className="text-xl font-bold text-black">Quick Message</h3>
+              <h3 id="quick-message-title" className="text-xl font-bold text-black">Quick Message</h3>
               <button
                 onClick={() => setIsModalOpen(false)}
+                aria-label="Close quick message"
                 className="text-gray-400 hover:text-black text-2xl"
               >
                 &times;
@@ -147,6 +155,7 @@ const Contact = () => {
             </div>
             <textarea
               autoFocus
+              aria-label="Quick message"
               className="w-full h-40 p-4 border border-gray-100 bg-gray-50 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition-all resize-none"
               placeholder="What's on your mind?"
             ></textarea>

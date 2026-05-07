@@ -6,7 +6,6 @@ import RequestSpeedLab from "../components/RequestSpeedLab";
 import SessionControlLab from "../components/SessionControlLab";
 import ThumbnailLab from "../components/ThumbnailLab";
 import LabSummary from "../components/LabSummary";
-import { HanddrawnSparkle, MarkerSweep } from "../components/Hero";
 
 const Lab = () => {
   const [activeCard, setActiveCard] = useState(0);
@@ -84,7 +83,8 @@ const Lab = () => {
   };
 
   return (
-    <div
+    <main
+      id="main-content"
       ref={containerRef}
       onScroll={handleScroll}
       className="w-full h-[calc(100vh-89px)] lg:h-[calc(100vh-89px)] overflow-y-auto scroll-smooth lg:snap-y lg:snap-mandatory relative"
@@ -200,9 +200,11 @@ const Lab = () => {
             </p>
 
             {/* Scroll Indicator */}
-            <motion.div
+            <motion.button
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              type="button"
+              aria-label="Scroll to system trade-offs experiment"
               className="mt-20 flex flex-col items-center gap-3 cursor-pointer group"
               onClick={() => {
                 if (containerRef.current) {
@@ -223,7 +225,7 @@ const Lab = () => {
                   strokeWidth={3}
                 />
               </div>
-            </motion.div>
+            </motion.button>
           </div>
         </section>
 
@@ -252,7 +254,7 @@ const Lab = () => {
           <LabSummary bgColor={getBgColor(5)} />
         </section>
       </div>
-    </div>
+    </main>
   );
 };
 

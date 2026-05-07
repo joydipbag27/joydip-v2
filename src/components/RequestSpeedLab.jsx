@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Database, 
@@ -9,13 +9,10 @@ import {
   Cpu, 
   Play, 
   RotateCcw, 
-  CheckCircle2, 
   TrendingUp,
-  Clock,
   Activity,
-  AlertCircle
 } from "lucide-react";
-import { HanddrawnSparkle, MarkerSweep } from "./Hero";
+import { MarkerSweep } from "./Hero";
 
 const RequestSpeedLab = ({ bgColor = "#ffffff" }) => {
   const [isSimulating, setIsSimulating] = useState(false);
@@ -44,7 +41,7 @@ const RequestSpeedLab = ({ bgColor = "#ffffff" }) => {
     }
   }, [lastRequestTime, isSimulating]);
 
-  const runSimulation = async () => {
+  const runSimulation = useCallback(async () => {
     if (isSimulating) return;
     
     simulationId.current += 1;
@@ -119,14 +116,14 @@ const RequestSpeedLab = ({ bgColor = "#ffffff" }) => {
 
     await Promise.all([normalDbPromise, redisPromise, lambdaPromise]);
     if (!checkCancelled()) setIsSimulating(false);
-  };
+  }, [isSimulating, lambdaWarm]);
 
   useEffect(() => {
     if (autoMode && !isSimulating) {
       autoModeTimer.current = setTimeout(runSimulation, 1500);
     }
     return () => clearTimeout(autoModeTimer.current);
-  }, [autoMode, isSimulating]);
+  }, [autoMode, isSimulating, runSimulation]);
 
   const resetSimulation = () => {
     simulationId.current += 1; // Cancel any ongoing simulations
@@ -163,7 +160,7 @@ const RequestSpeedLab = ({ bgColor = "#ffffff" }) => {
             </div>
 
             <div className="relative">
-              <h1 className="text-4xl md:text-5xl font-black tracking-tight text-black leading-[0.95] select-none uppercase relative z-10">
+              <h2 className="text-4xl md:text-5xl font-black tracking-tight text-black leading-[0.95] select-none uppercase relative z-10">
                 Request <span className="relative inline-block z-10 px-1">
                   Speed
                   <span className="absolute inset-y-0 left-0 right-0 -z-10 block">
@@ -172,7 +169,7 @@ const RequestSpeedLab = ({ bgColor = "#ffffff" }) => {
                     </AnimatePresence>
                   </span>
                 </span> <br /> Trade-Offs
-              </h1>
+              </h2>
             </div>
 
             <p className="text-[14px] text-gray-700 font-bold max-w-sm leading-tight italic mt-2">
@@ -230,6 +227,7 @@ const RequestSpeedLab = ({ bgColor = "#ffffff" }) => {
                 <button 
                   onClick={runSimulation}
                   disabled={isSimulating}
+                  aria-label="Send request speed simulation"
                   className={`flex-grow sm:flex-grow-0 flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all ${isSimulating ? 'bg-gray-100 opacity-50 cursor-not-allowed' : 'bg-[#D4FF00] hover:bg-[#c4eb00] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none'}`}
                 >
                   <Play size={12} fill="black" />
@@ -240,6 +238,8 @@ const RequestSpeedLab = ({ bgColor = "#ffffff" }) => {
                   <span className="text-[9px] font-black uppercase tracking-tight">Auto</span>
                   <button 
                     onClick={() => setAutoMode(!autoMode)}
+                    aria-label="Toggle automatic request simulation"
+                    aria-pressed={autoMode}
                     className={`w-7 h-3.5 rounded-full relative transition-colors border border-black/10 ${autoMode ? 'bg-[#D4FF00]' : 'bg-gray-200'}`}
                   >
                     <motion.div 
@@ -251,6 +251,7 @@ const RequestSpeedLab = ({ bgColor = "#ffffff" }) => {
 
                 <button 
                   onClick={resetSimulation}
+                  aria-label="Reset request speed simulation"
                   className="p-2 border-2 border-black rounded-xl bg-white hover:bg-gray-50 active:translate-x-[1px] active:translate-y-[1px] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
                 >
                   <RotateCcw size={14} className="text-black" />

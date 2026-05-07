@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Upload,
@@ -7,8 +7,6 @@ import {
   Maximize,
   Download,
   RotateCcw,
-  ShieldCheck,
-  Coins,
   ArrowRight,
   TrendingDown,
   Monitor,
@@ -17,7 +15,7 @@ import {
   Settings2,
   Box,
 } from "lucide-react";
-import { HanddrawnSparkle, MarkerSweep } from "./Hero";
+import { MarkerSweep } from "./Hero";
 
 const ThumbnailLab = ({ bgColor = "#ffffff" }) => {
   const [image, setImage] = useState(null);
@@ -31,8 +29,6 @@ const ThumbnailLab = ({ bgColor = "#ffffff" }) => {
   const [isSimulating, setIsSimulating] = useState(false);
 
   const fileInputRef = useRef(null);
-  const canvasRef = useRef(null);
-
   const handleUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -142,7 +138,7 @@ const ThumbnailLab = ({ bgColor = "#ffffff" }) => {
             </div>
 
             <div className="relative">
-              <h1 className="text-4xl md:text-5xl font-black tracking-tight text-black leading-[0.95] select-none uppercase relative z-10">
+              <h2 className="text-4xl md:text-5xl font-black tracking-tight text-black leading-[0.95] select-none uppercase relative z-10">
                 Client-Side <br />
                 <span className="relative inline-block z-10 px-1">
                   Thumbnails
@@ -152,7 +148,7 @@ const ThumbnailLab = ({ bgColor = "#ffffff" }) => {
                     </AnimatePresence>
                   </span>
                 </span>
-              </h1>
+              </h2>
             </div>
 
             <p className="text-[14px] text-gray-700 font-bold max-w-sm leading-tight italic mt-2">
@@ -250,6 +246,7 @@ const ThumbnailLab = ({ bgColor = "#ffffff" }) => {
                   onChange={handleUpload}
                   className="hidden"
                   accept="image/*"
+                  aria-label="Upload image for client-side thumbnail experiment"
                 />
                 <ControlButton
                   icon={<Upload size={14} />}
@@ -274,6 +271,7 @@ const ThumbnailLab = ({ bgColor = "#ffffff" }) => {
                 />
                 <button
                   onClick={reset}
+                  aria-label="Reset thumbnail experiment"
                   className="p-2 border-2 border-black rounded-xl bg-white hover:bg-gray-50 active:translate-x-[1px] active:translate-y-[1px] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] shrink-0"
                 >
                   <RotateCcw size={14} className="text-black" />
@@ -333,7 +331,8 @@ const ThumbnailLab = ({ bgColor = "#ffffff" }) => {
                       <img
                         src={image.url}
                         className="w-full h-full object-cover"
-                        alt="Original"
+                        alt={`Original uploaded image preview: ${image.name}`}
+                        decoding="async"
                       />
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
                         <div className="text-center text-white">
@@ -412,7 +411,8 @@ const ThumbnailLab = ({ bgColor = "#ffffff" }) => {
                           animate={{ scale: 1, opacity: 1 }}
                           src={thumbnail}
                           className="w-[80%] h-[80%] object-cover rounded-lg shadow-xl"
-                          alt="Thumbnail"
+                          alt="Generated square thumbnail preview"
+                          decoding="async"
                         />
                       ) : (
                         <div className="flex flex-col items-center gap-2 opacity-10">
@@ -577,22 +577,6 @@ const MetricRow = ({ label, value, highlight }) => (
     >
       {value}
     </span>
-  </div>
-);
-
-const Feature = ({ icon, title, desc }) => (
-  <div className="flex items-start gap-3">
-    <div className="w-10 h-10 rounded-full border-2 border-black flex items-center justify-center shrink-0">
-      {icon}
-    </div>
-    <div className="flex flex-col">
-      <span className="text-[10px] font-black uppercase tracking-tight text-black">
-        {title}
-      </span>
-      <span className="text-[8px] font-bold text-gray-400 uppercase leading-tight mt-0.5">
-        {desc}
-      </span>
-    </div>
   </div>
 );
 

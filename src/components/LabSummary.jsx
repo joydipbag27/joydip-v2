@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Beaker, Scale, Zap, ShieldCheck, Image, Heart } from 'lucide-react';
+import { Scale, Zap, ShieldCheck, Image, Heart } from 'lucide-react';
 
 const LabSummary = ({ bgColor }) => {
   const cards = [
@@ -42,9 +42,9 @@ const LabSummary = ({ bgColor }) => {
             <div className="w-1.5 h-1.5 rounded-full bg-[#D4FF00] border border-black" />
             Engineering Lab
           </div>
-          <h1 className="text-4xl md:text-5xl font-black text-black leading-none uppercase tracking-tighter">
+          <h2 className="text-4xl md:text-5xl font-black text-black leading-none uppercase tracking-tighter">
             Lab Journey So Far
-          </h1>
+          </h2>
           <p className="text-gray-400 font-bold max-w-lg leading-tight text-sm italic">
             Exploring how systems behave, trade-offs exist, and decisions shape outcomes.
           </p>

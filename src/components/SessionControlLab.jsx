@@ -1,29 +1,21 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Database,
-  Zap,
   User,
   Server,
   Layers,
-  Cpu,
-  Play,
   RotateCcw,
-  CheckCircle2,
-  TrendingUp,
   Clock,
   Activity,
-  AlertCircle,
   LogIn,
   Send,
   LogOut,
   ShieldCheck,
-  ShieldAlert,
   Key,
   Check,
   Database as RedisIcon,
 } from "lucide-react";
-import { HanddrawnSparkle, MarkerSweep } from "./Hero";
+import { MarkerSweep } from "./Hero";
 
 const SessionControlLab = ({ bgColor = "#ffffff" }) => {
   const [step, setStep] = useState(0); // 0: idle, 1: logged_in, 2: request_sent, 3: force_logout, 4: post_logout_request
@@ -103,7 +95,7 @@ const SessionControlLab = ({ bgColor = "#ffffff" }) => {
             </div>
 
             <div className="relative">
-              <h1 className="text-4xl md:text-5xl font-black tracking-tight text-black leading-[0.95] select-none uppercase relative z-10">
+              <h2 className="text-4xl md:text-5xl font-black tracking-tight text-black leading-[0.95] select-none uppercase relative z-10">
                 Session <br />
                 <span className="relative inline-block z-10 px-1">
                   Control
@@ -113,7 +105,7 @@ const SessionControlLab = ({ bgColor = "#ffffff" }) => {
                     </AnimatePresence>
                   </span>
                 </span>
-              </h1>
+              </h2>
             </div>
 
             <p className="text-[14px] text-gray-700 font-bold max-w-sm leading-tight italic mt-2">
@@ -216,6 +208,7 @@ const SessionControlLab = ({ bgColor = "#ffffff" }) => {
                 />
                 <button
                   onClick={resetSimulation}
+                  aria-label="Reset session control simulation"
                   className="p-2 border-2 border-black rounded-xl bg-white hover:bg-gray-50 active:translate-x-[1px] active:translate-y-[1px] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] shrink-0"
                 >
                   <RotateCcw size={14} className="text-black" />
@@ -432,7 +425,7 @@ const Node = ({
   </div>
 );
 
-const TimelineItem = ({ num, label, sub, active, isCurrent }) => (
+const TimelineItem = ({ num, label, sub, active }) => (
   <div className="flex flex-col items-center gap-1.5 w-1/4">
     <div
       className={`w-5 h-5 rounded-full border-2 flex items-center justify-center text-[9px] font-black transition-all ${active ? "bg-black text-[#D4FF00] border-black scale-110 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" : "bg-white text-black/20 border-black/20"}`}
@@ -458,7 +451,6 @@ const ControlButton = ({
   icon,
   label,
   onClick,
-  active,
   disabled,
   highlight,
 }) => (

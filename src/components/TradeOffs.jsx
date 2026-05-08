@@ -264,13 +264,7 @@ const TradeOffs = ({ bgColor = "#fcfcfc" }) => {
   );
 };
 
-const Slider = ({
-  label,
-  sub,
-  value,
-  icon,
-  onChange,
-}) => {
+const Slider = ({ label, sub, value, icon, onChange }) => {
   const positions = [0, 50, 100];
 
   return (
@@ -346,7 +340,7 @@ const Slider = ({
 
         {/* Labels */}
         <div className="relative h-4 px-1">
-          {["Min", "Opt", "Max"].map((l, i) => (
+          {(label === "Cost" ? ["Max", "Opt", "Min"] : ["Min", "Opt", "Max"]).map((l, i) => (
             <button
               key={l}
               onClick={() => onChange(i)}
